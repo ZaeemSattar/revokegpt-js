@@ -1,0 +1,264 @@
+{
+  "suite": "gateway-codes",
+  "protocolVersion": 1,
+  "description": "Gateway decline code normalisation (protocol v1 section 20, GATEWAY_CODES_VERSION 1). input.gateway is a gateway id (see gateways) or absent: a snake_case code is then looked up in the first gateway's table. Matching is case-insensitive and trims whitespace. Unknown gateways and codes give UNKNOWN.",
+  "gateways": [
+    "stripe",
+    "adyen",
+    "braintree"
+  ],
+  "gatewayCodesVersion": 1,
+  "cases": [
+    {
+      "name": "default table: incorrect_cvc",
+      "input": {
+        "code": "incorrect_cvc"
+      },
+      "expected": {
+        "class": "DECLINED_ENUMERATION"
+      }
+    },
+    {
+      "name": "default table: stolen_card",
+      "input": {
+        "code": "stolen_card"
+      },
+      "expected": {
+        "class": "DECLINED_ISSUER_FRAUD"
+      }
+    },
+    {
+      "name": "default table: insufficient_funds",
+      "input": {
+        "code": "insufficient_funds"
+      },
+      "expected": {
+        "class": "DECLINED_FUNDS"
+      }
+    },
+    {
+      "name": "default table: generic_decline",
+      "input": {
+        "code": "generic_decline"
+      },
+      "expected": {
+        "class": "DECLINED_GENERIC"
+      }
+    },
+    {
+      "name": "default table: authentication_required",
+      "input": {
+        "code": "authentication_required"
+      },
+      "expected": {
+        "class": "AUTH_REQUIRED"
+      }
+    },
+    {
+      "name": "default table: processing_error",
+      "input": {
+        "code": "processing_error"
+      },
+      "expected": {
+        "class": "ERROR"
+      }
+    },
+    {
+      "name": "default table: case and spaces",
+      "input": {
+        "code": "  Incorrect_CVC "
+      },
+      "expected": {
+        "class": "DECLINED_ENUMERATION"
+      }
+    },
+    {
+      "name": "named first gateway: invalid_number",
+      "input": {
+        "gateway": "stripe",
+        "code": "invalid_number"
+      },
+      "expected": {
+        "class": "DECLINED_ENUMERATION"
+      }
+    },
+    {
+      "name": "adyen 24",
+      "input": {
+        "gateway": "adyen",
+        "code": "24"
+      },
+      "expected": {
+        "class": "DECLINED_ENUMERATION"
+      }
+    },
+    {
+      "name": "adyen CVC Declined",
+      "input": {
+        "gateway": "adyen",
+        "code": "CVC Declined"
+      },
+      "expected": {
+        "class": "DECLINED_ENUMERATION"
+      }
+    },
+    {
+      "name": "adyen 31",
+      "input": {
+        "gateway": "adyen",
+        "code": "31"
+      },
+      "expected": {
+        "class": "DECLINED_ISSUER_FRAUD"
+      }
+    },
+    {
+      "name": "adyen Issuer Suspected Fraud",
+      "input": {
+        "gateway": "adyen",
+        "code": "Issuer Suspected Fraud"
+      },
+      "expected": {
+        "class": "DECLINED_ISSUER_FRAUD"
+      }
+    },
+    {
+      "name": "adyen 12",
+      "input": {
+        "gateway": "adyen",
+        "code": "12"
+      },
+      "expected": {
+        "class": "DECLINED_FUNDS"
+      }
+    },
+    {
+      "name": "adyen 2 Refused",
+      "input": {
+        "gateway": "adyen",
+        "code": "Refused"
+      },
+      "expected": {
+        "class": "DECLINED_GENERIC"
+      }
+    },
+    {
+      "name": "adyen unlisted 99",
+      "input": {
+        "gateway": "adyen",
+        "code": "99"
+      },
+      "expected": {
+        "class": "UNKNOWN"
+      }
+    },
+    {
+      "name": "braintree 1000",
+      "input": {
+        "gateway": "braintree",
+        "code": "1000"
+      },
+      "expected": {
+        "class": "APPROVED"
+      }
+    },
+    {
+      "name": "braintree 2001",
+      "input": {
+        "gateway": "braintree",
+        "code": "2001"
+      },
+      "expected": {
+        "class": "DECLINED_FUNDS"
+      }
+    },
+    {
+      "name": "braintree 2010 CVV",
+      "input": {
+        "gateway": "braintree",
+        "code": "2010"
+      },
+      "expected": {
+        "class": "DECLINED_ENUMERATION"
+      }
+    },
+    {
+      "name": "braintree 2013 possible stolen",
+      "input": {
+        "gateway": "braintree",
+        "code": "2013"
+      },
+      "expected": {
+        "class": "DECLINED_ISSUER_FRAUD"
+      }
+    },
+    {
+      "name": "braintree 2000 do not honor",
+      "input": {
+        "gateway": "braintree",
+        "code": "2000"
+      },
+      "expected": {
+        "class": "DECLINED_GENERIC"
+      }
+    },
+    {
+      "name": "braintree 2099 authentication required",
+      "input": {
+        "gateway": "braintree",
+        "code": "2099"
+      },
+      "expected": {
+        "class": "AUTH_REQUIRED"
+      }
+    },
+    {
+      "name": "braintree 3000 network unavailable",
+      "input": {
+        "gateway": "braintree",
+        "code": "3000"
+      },
+      "expected": {
+        "class": "ERROR"
+      }
+    },
+    {
+      "name": "braintree 2500 in the processor declined range",
+      "input": {
+        "gateway": "braintree",
+        "code": "2500"
+      },
+      "expected": {
+        "class": "DECLINED_GENERIC"
+      }
+    },
+    {
+      "name": "unknown gateway",
+      "input": {
+        "gateway": "nope",
+        "code": "zzz"
+      },
+      "expected": {
+        "class": "UNKNOWN"
+      }
+    },
+    {
+      "name": "unknown code",
+      "input": {
+        "code": "zzz"
+      },
+      "expected": {
+        "class": "UNKNOWN"
+      }
+    },
+    {
+      "name": "prototype key is not a code",
+      "input": {
+        "code": "constructor"
+      },
+      "expected": {
+        "class": "UNKNOWN"
+      }
+    }
+  ]
+}

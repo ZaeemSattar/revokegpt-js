@@ -1,0 +1,130 @@
+{
+  "suite": "otp",
+  "protocolVersion": 1,
+  "description": "One-time code known answers (protocol v1 section 17). otpFromRandom reads u32 values from a stream and skips every value >= 4294000000 (the largest multiple of 10^6 below 2^32), then returns value mod 10^6 as six digits, zero padded; consumed is how many values were read. K_otp = HKDF-SHA-256(kekHex, salt empty, info 'rg-otp-v1', L = 32 bytes) as an HMAC-SHA-256 key; the stored value is HMAC(K_otp, ASCII mfaId || ASCII code) (macHex, in macCases, not counted as cases).",
+  "kekHex": "a0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebf",
+  "cases": [
+    {
+      "name": "leading zeros kept",
+      "input": {
+        "stream": [
+          4211
+        ]
+      },
+      "expected": {
+        "code": "004211",
+        "consumed": 1
+      }
+    },
+    {
+      "name": "zero",
+      "input": {
+        "stream": [
+          0
+        ]
+      },
+      "expected": {
+        "code": "000000",
+        "consumed": 1
+      }
+    },
+    {
+      "name": "upper edge of the first accepted block",
+      "input": {
+        "stream": [
+          4293999999
+        ]
+      },
+      "expected": {
+        "code": "999999",
+        "consumed": 1
+      }
+    },
+    {
+      "name": "lowest rejected value is skipped",
+      "input": {
+        "stream": [
+          4294000000,
+          123456789
+        ]
+      },
+      "expected": {
+        "code": "456789",
+        "consumed": 2
+      }
+    },
+    {
+      "name": "highest u32 is skipped",
+      "input": {
+        "stream": [
+          4294967295,
+          4294967295,
+          987654321
+        ]
+      },
+      "expected": {
+        "code": "654321",
+        "consumed": 3
+      }
+    },
+    {
+      "name": "one million is zero",
+      "input": {
+        "stream": [
+          1000000
+        ]
+      },
+      "expected": {
+        "code": "000000",
+        "consumed": 1
+      }
+    },
+    {
+      "name": "three rejected then accepted",
+      "input": {
+        "stream": [
+          4294000000,
+          4294500000,
+          4294967295,
+          4211
+        ]
+      },
+      "expected": {
+        "code": "004211",
+        "consumed": 4
+      }
+    }
+  ],
+  "macCases": [
+    {
+      "name": "plain code",
+      "input": {
+        "mfaId": "AQIDBAUGBwgJCgsMDQ4PEA",
+        "code": "482913"
+      },
+      "expected": {
+        "macHex": "69b49e90d8da6351a3cbfe66cdaefd9e69374bc22cfdc83b1f7f472e40906784"
+      }
+    },
+    {
+      "name": "leading zeros",
+      "input": {
+        "mfaId": "AQIDBAUGBwgJCgsMDQ4PEA",
+        "code": "004211"
+      },
+      "expected": {
+        "macHex": "ff8880d736739f5b93679d66dad54b077ccb15872c6a5dba88e994217c0f15f9"
+      }
+    },
+    {
+      "name": "other session, same code",
+      "input": {
+        "mfaId": "8O_u7ezr6uno5-bl5OPi4Q",
+        "code": "482913"
+      },
+      "expected": {
+        "macHex": "6f27359409cc303eb5bfa4f0c78dad5443708a4db71ce75af9af4faa36d830fa"
+      }
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "suite": "assessment-id",
+  "protocolVersion": 1,
+  "description": "Assessment id known answers (protocol v1 section 14). aid = base64url(0x01 || tid[16] || iat u32be || score_tenths u8 || mode u8 || HMAC-SHA-256(k_aid, 'rg-aid-v1' || siteId || the 23 preceding bytes)[0..8]): 31 bytes, 42 characters. k_aid here is the HMAC key bytes keyHex. Every case decodes `aid` for `siteId` at `nowSec`. The wrong-site, flipped-MAC, bad-version, wrong-length and bad-character failures are all the same `not-found`; only an age over 30 days is `expired`.",
+  "keyHex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "encode": {
+    "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+    "tidHex": "000102030405060708090a0b0c0d0e0f",
+    "iat": 1790000000,
+    "scoreTenths": 7,
+    "mode": 3,
+    "aid": "AQABAgMEBQYHCAkKCwwNDg9qsTuABwPPoRIwkQWIrg"
+  },
+  "cases": [
+    {
+      "name": "valid: express score 0.7",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "aid": "AQABAgMEBQYHCAkKCwwNDg9qsTuABwPPoRIwkQWIrg",
+        "nowSec": 1790000060
+      },
+      "expected": {
+        "ok": true
+      }
+    },
+    {
+      "name": "wrong site",
+      "input": {
+        "siteId": "9d2e4b60-1c3a-4f58-8e7d-2a6b5c4d3e1f",
+        "aid": "AQABAgMEBQYHCAkKCwwNDg9qsTuABwPPoRIwkQWIrg",
+        "nowSec": 1790000060
+      },
+      "expected": {
+        "ok": false,
+        "why": "not-found"
+      }
+    },
+    {
+      "name": "flipped MAC bit",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "aid": "AQABAgMEBQYHCAkKCwwNDg9qsTuABwPPoRIwkQWIrw",
+        "nowSec": 1790000060
+      },
+      "expected": {
+        "ok": false,
+        "why": "not-found"
+      }
+    },
+    {
+      "name": "version 0x02",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "aid": "AgABAgMEBQYHCAkKCwwNDg9qsTuABwPPoRIwkQWIrg",
+        "nowSec": 1790000060
+      },
+      "expected": {
+        "ok": false,
+        "why": "not-found"
+      }
+    },
+    {
+      "name": "age exactly 30 days is ok",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "aid": "AQABAgMEBQYHCAkKCwwNDg9qsTuABwPPoRIwkQWIrg",
+        "nowSec": 1792592000
+      },
+      "expected": {
+        "ok": true
+      }
+    },
+    {
+      "name": "age 30 days + 1 s is expired",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "aid": "AQABAgMEBQYHCAkKCwwNDg9qsTuABwPPoRIwkQWIrg",
+        "nowSec": 1792592001
+      },
+      "expected": {
+        "ok": false,
+        "why": "expired"
+      }
+    }
+  ]
+}

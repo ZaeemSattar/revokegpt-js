@@ -1,0 +1,50 @@
+{
+  "suite": "phone-hash",
+  "protocolVersion": 1,
+  "description": "Phone and number-block hash known answers (protocol v1 section 21). K = HKDF-SHA-256(masterKeyHex, salt empty, info, L = 32 bytes) with info 'rg-phone-v1|' + siteId (phoneKey) or 'rg-pfx-v1|' + siteId (blockKeys). phoneKey = base64url(HMAC(K, e164)[0..16]); b2 = base64url(HMAC(K, 'b2:' || e164 minus its last 2 digits)[0..16]); b4 = the same with 'b4:' and the last 4 digits dropped. +447700900123 is in Ofcom's drama range. Every hash is 22 characters.",
+  "masterKeyHex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "cases": [
+    {
+      "name": "phone site A",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "e164": "+447700900123"
+      },
+      "expected": {
+        "phone": "eUN4yeysQDsBy6RWDcYFuA",
+        "b2Input": "b2:+4477009001",
+        "b4Input": "b4:+44770090",
+        "b2": "-ZPk89tMJY5CGb8q9hm1mQ",
+        "b4": "uVLZpo_TuRJRumBhRzmGig"
+      }
+    },
+    {
+      "name": "phone site B",
+      "input": {
+        "siteId": "7a2d9c41-1e6f-4b83-8d05-6f3a9b2c1e70",
+        "e164": "+447700900123"
+      },
+      "expected": {
+        "phone": "nwDSWMYHmB6eg1AW3qdUIw",
+        "b2Input": "b2:+4477009001",
+        "b4Input": "b4:+44770090",
+        "b2": "Qw26nbdjd85ZReJUrYz79Q",
+        "b4": "eFsPOTAJthxcM3bhqHnJsg"
+      }
+    },
+    {
+      "name": "phone +14155550100 (NANP 555-01xx)",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "e164": "+14155550100"
+      },
+      "expected": {
+        "phone": "GYxNTMLPuhG7iEDjzyjk0g",
+        "b2Input": "b2:+141555501",
+        "b4Input": "b4:+1415555",
+        "b2": "d7qckX3XlyJfQJF6pua6hA",
+        "b4": "UJ8PFbc7yWqWHTq6GQkrsQ"
+      }
+    }
+  ]
+}

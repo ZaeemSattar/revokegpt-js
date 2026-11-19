@@ -1,0 +1,72 @@
+{
+  "name": "@revokegpt/protocol",
+  "version": "0.1.0",
+  "license": "MIT",
+  "homepage": "https://revokegpt.com",
+  "bugs": {
+    "url": "https://github.com/ZaeemSattar/revokegpt-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZaeemSattar/revokegpt-js.git",
+    "directory": "packages/protocol"
+  },
+  "keywords": [
+    "revokegpt",
+    "captcha",
+    "recaptcha-alternative",
+    "bot-protection",
+    "proof-of-work",
+    "protocol",
+    "siteverify",
+    "typescript"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "revokegpt": {
+    "visibility": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./test-vectors/*": "./test-vectors/*",
+    "./openapi.json": "./openapi/openapi.json"
+  },
+  "files": [
+    "dist",
+    "test-vectors",
+    "openapi",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "openapi:write": "tsx scripts/write-openapi.ts",
+    "openapi:check": "pnpm openapi:write && git diff --exit-code openapi/",
+    "openapi:lint": "redocly lint openapi/openapi.json",
+    "vectors:pow": "tsx scripts/generate-pow-vectors.ts",
+    "vectors:aid": "tsx scripts/generate-aid-vectors.ts",
+    "vectors:policy": "tsx scripts/generate-policy-vectors.ts",
+    "vectors:policy-rules": "tsx scripts/generate-policy-rules-vectors.ts",
+    "vectors:mobile": "tsx scripts/generate-mobile-vectors.ts",
+    "vectors:sdk-schemas": "tsx scripts/generate-sdk-schema-vectors.ts",
+    "vectors:sdk-http": "tsx scripts/generate-sdk-http-vectors.ts",
+    "vectors:check": "pnpm vectors:pow && pnpm vectors:aid && pnpm vectors:policy && pnpm vectors:policy-rules && pnpm vectors:sdk-schemas && pnpm vectors:sdk-http && pnpm vectors:mobile && git diff --exit-code test-vectors/"
+  },
+  "devDependencies": {
+    "@redocly/cli": "^2.71.0",
+    "@types/node": "^26.0.0",
+    "fast-check": "4.10.1",
+    "markdown-it": "15.0.3",
+    "tsx": "^4.23.15",
+    "vitest": "^4.1.0",
+    "zod-openapi": "^6.0.2"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  }
+}

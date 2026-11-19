@@ -1,0 +1,60 @@
+{
+  "name": "@revokegpt/firewall",
+  "version": "0.1.0",
+  "description": "RevokeGPT firewall runtime core: a framework-neutral shell around the signed-policy decision engine, for server and edge integrations.",
+  "license": "MIT",
+  "homepage": "https://revokegpt.com",
+  "bugs": {
+    "url": "https://github.com/ZaeemSattar/revokegpt-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZaeemSattar/revokegpt-js.git",
+    "directory": "sdks/integrations/firewall"
+  },
+  "keywords": [
+    "revokegpt",
+    "captcha",
+    "recaptcha-alternative",
+    "bot-protection",
+    "proof-of-work",
+    "firewall",
+    "waf",
+    "edge",
+    "typescript"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "revokegpt": {
+    "visibility": "public"
+  },
+  "engines": {
+    "node": ">=26"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@revokegpt/protocol": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.0",
+    "vitest": "^4.1.0"
+  }
+}

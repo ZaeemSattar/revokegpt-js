@@ -1,0 +1,76 @@
+{
+  "name": "@revokegpt/vue",
+  "version": "0.1.0",
+  "description": "RevokeGPT for Vue 3: a component and a composable over @revokegpt/js.",
+  "license": "MIT",
+  "homepage": "https://revokegpt.com",
+  "bugs": {
+    "url": "https://github.com/ZaeemSattar/revokegpt-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZaeemSattar/revokegpt-js.git",
+    "directory": "packages/vue"
+  },
+  "keywords": [
+    "revokegpt",
+    "captcha",
+    "recaptcha-alternative",
+    "bot-protection",
+    "proof-of-work",
+    "vue",
+    "composable",
+    "component",
+    "typescript"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "revokegpt": {
+    "visibility": "public"
+  },
+  "engines": {
+    "node": ">=26"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node -e \"fs.writeFileSync('dist/cjs/package.json','{\\\"type\\\":\\\"commonjs\\\"}')\"",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@revokegpt/js": "0.1.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.0",
+    "@vue/test-utils": "2.5.1",
+    "jsdom": "30.1.3",
+    "vitest": "^4.1.0",
+    "vue": "3.5.44"
+  }
+}

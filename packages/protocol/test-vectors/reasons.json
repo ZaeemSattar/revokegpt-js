@@ -1,0 +1,31 @@
+{
+  "suite": "reasons",
+  "protocolVersion": 1,
+  "description": "Reason bitmap. { bits } -> { reasons } decodes (unknown bits ignored, output in ascending bit order); { reasons } -> { bits } encodes (duplicates collapse). Bit numbers: AUTOMATION=0, UNEXPECTED_ENVIRONMENT=1, TOO_MUCH_TRAFFIC=2, UNEXPECTED_USAGE_PATTERNS=3, DATACENTER_IP=4, ANONYMIZER=5, INTEGRITY_FAILED=6, LOW_CONFIDENCE_SCORE=7, NETWORK_MISMATCH=8, PLAN_RESTRICTED=9.",
+  "cases": [
+    { "name": "decode: zero", "input": { "bits": 0 }, "expected": { "reasons": [] } },
+    { "name": "decode: AUTOMATION", "input": { "bits": 1 }, "expected": { "reasons": ["AUTOMATION"] } },
+    { "name": "decode: bit 1", "input": { "bits": 2 }, "expected": { "reasons": ["UNEXPECTED_ENVIRONMENT"] } },
+    { "name": "decode: bit 2", "input": { "bits": 4 }, "expected": { "reasons": ["TOO_MUCH_TRAFFIC"] } },
+    { "name": "decode: bit 3", "input": { "bits": 8 }, "expected": { "reasons": ["UNEXPECTED_USAGE_PATTERNS"] } },
+    { "name": "decode: bit 4", "input": { "bits": 16 }, "expected": { "reasons": ["DATACENTER_IP"] } },
+    { "name": "decode: AUTOMATION + ANONYMIZER", "input": { "bits": 33 }, "expected": { "reasons": ["AUTOMATION", "ANONYMIZER"] } },
+    { "name": "decode: bit 6", "input": { "bits": 64 }, "expected": { "reasons": ["INTEGRITY_FAILED"] } },
+    { "name": "decode: AUTOMATION + LOW_CONFIDENCE_SCORE", "input": { "bits": 129 }, "expected": { "reasons": ["AUTOMATION", "LOW_CONFIDENCE_SCORE"] } },
+    { "name": "decode: bits 0 to 7", "input": { "bits": 255 }, "expected": { "reasons": ["AUTOMATION", "UNEXPECTED_ENVIRONMENT", "TOO_MUCH_TRAFFIC", "UNEXPECTED_USAGE_PATTERNS", "DATACENTER_IP", "ANONYMIZER", "INTEGRITY_FAILED", "LOW_CONFIDENCE_SCORE"] } },
+    { "name": "decode: bit 8", "input": { "bits": 256 }, "expected": { "reasons": ["NETWORK_MISMATCH"] } },
+    { "name": "decode: bit 9", "input": { "bits": 512 }, "expected": { "reasons": ["PLAN_RESTRICTED"] } },
+    { "name": "decode: all known bits", "input": { "bits": 1023 }, "expected": { "reasons": ["AUTOMATION", "UNEXPECTED_ENVIRONMENT", "TOO_MUCH_TRAFFIC", "UNEXPECTED_USAGE_PATTERNS", "DATACENTER_IP", "ANONYMIZER", "INTEGRITY_FAILED", "LOW_CONFIDENCE_SCORE", "NETWORK_MISMATCH", "PLAN_RESTRICTED"] } },
+    { "name": "decode: unknown high bit alone", "input": { "bits": 1048576 }, "expected": { "reasons": [] } },
+    { "name": "decode: unknown high bit ignored next to known bit", "input": { "bits": 1048577 }, "expected": { "reasons": ["AUTOMATION"] } },
+    { "name": "decode: bit 30 ignored", "input": { "bits": 1073741825 }, "expected": { "reasons": ["AUTOMATION"] } },
+    { "name": "encode: empty", "input": { "reasons": [] }, "expected": { "bits": 0 } },
+    { "name": "encode: AUTOMATION + LOW_CONFIDENCE_SCORE", "input": { "reasons": ["AUTOMATION", "LOW_CONFIDENCE_SCORE"] }, "expected": { "bits": 129 } },
+    { "name": "encode: order independent", "input": { "reasons": ["ANONYMIZER", "AUTOMATION"] }, "expected": { "bits": 33 } },
+    { "name": "encode: duplicates collapse", "input": { "reasons": ["AUTOMATION", "AUTOMATION"] }, "expected": { "bits": 1 } },
+    { "name": "encode: DATACENTER_IP", "input": { "reasons": ["DATACENTER_IP"] }, "expected": { "bits": 16 } },
+    { "name": "encode: NETWORK_MISMATCH", "input": { "reasons": ["NETWORK_MISMATCH"] }, "expected": { "bits": 256 } },
+    { "name": "encode: PLAN_RESTRICTED", "input": { "reasons": ["PLAN_RESTRICTED"] }, "expected": { "bits": 512 } },
+    { "name": "encode: all known", "input": { "reasons": ["AUTOMATION", "UNEXPECTED_ENVIRONMENT", "TOO_MUCH_TRAFFIC", "UNEXPECTED_USAGE_PATTERNS", "DATACENTER_IP", "ANONYMIZER", "INTEGRITY_FAILED", "LOW_CONFIDENCE_SCORE", "NETWORK_MISMATCH", "PLAN_RESTRICTED"] }, "expected": { "bits": 1023 } }
+  ]
+}

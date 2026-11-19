@@ -1,0 +1,9 @@
+packages:
+  - packages/*
+  - sdks/*
+  - sdks/integrations/*
+linkWorkspacePackages: true
+minimumReleaseAge: 10080
+minimumReleaseAgeIgnoreMissingTime: false
+trustPolicy: no-downgrade
+blockExoticSubdeps: true

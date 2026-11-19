@@ -1,0 +1,84 @@
+{
+  "name": "@revokegpt/firewall-node",
+  "version": "0.1.0",
+  "description": "RevokeGPT firewall middleware for Express, Fastify and plain node:http.",
+  "license": "MIT",
+  "homepage": "https://revokegpt.com",
+  "bugs": {
+    "url": "https://github.com/ZaeemSattar/revokegpt-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZaeemSattar/revokegpt-js.git",
+    "directory": "sdks/integrations/node"
+  },
+  "keywords": [
+    "revokegpt",
+    "captcha",
+    "recaptcha-alternative",
+    "bot-protection",
+    "proof-of-work",
+    "node",
+    "express",
+    "middleware",
+    "firewall"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "revokegpt": {
+    "visibility": "public"
+  },
+  "engines": {
+    "node": ">=26"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/node-http.d.ts",
+      "default": "./dist/node-http.js"
+    },
+    "./express": {
+      "types": "./dist/express.d.ts",
+      "default": "./dist/express.js"
+    },
+    "./fastify": {
+      "types": "./dist/fastify.d.ts",
+      "default": "./dist/fastify.js"
+    }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@revokegpt/firewall": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.6",
+    "@types/node": "^26.0.0",
+    "@revokegpt/protocol": "0.1.0",
+    "express": "5.3.0",
+    "fastify": "5.12.7",
+    "vitest": "^4.1.0"
+  },
+  "peerDependencies": {
+    "express": ">=4.18",
+    "fastify": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "express": {
+      "optional": true
+    },
+    "fastify": {
+      "optional": true
+    }
+  }
+}

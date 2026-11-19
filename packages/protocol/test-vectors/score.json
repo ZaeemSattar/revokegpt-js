@@ -1,0 +1,17 @@
+{
+  "suite": "score",
+  "protocolVersion": 1,
+  "description": "Score quantization: clamp to [0, 1], then round to the nearest 0.1 with ties toward +Infinity (JavaScript Math.round(x * 10) / 10 on the clamped value; floor(x * 10 + 0.5) / 10 is non-conformant at IEEE edges). NaN, +Infinity and -Infinity cannot be expressed in JSON, so they have no vectors here; v1.md section 6 specifies them and every SDK must test them itself: each fails closed to 0 (+Infinity is not clamped to 1).",
+  "cases": [
+    { "name": "0.04 rounds down to 0", "input": { "raw": 0.04 }, "expected": { "score": 0 } },
+    { "name": "0.05 rounds up to 0.1", "input": { "raw": 0.05 }, "expected": { "score": 0.1 } },
+    { "name": "0.25 rounds to 0.3", "input": { "raw": 0.25 }, "expected": { "score": 0.3 } },
+    { "name": "0.94 rounds to 0.9", "input": { "raw": 0.94 }, "expected": { "score": 0.9 } },
+    { "name": "negative clamps to 0", "input": { "raw": -3 }, "expected": { "score": 0 } },
+    { "name": "above one clamps to 1", "input": { "raw": 7 }, "expected": { "score": 1 } },
+    { "name": "exactly 0", "input": { "raw": 0 }, "expected": { "score": 0 } },
+    { "name": "exactly 1", "input": { "raw": 1 }, "expected": { "score": 1 } },
+    { "name": "0.5 stays", "input": { "raw": 0.5 }, "expected": { "score": 0.5 } },
+    { "name": "IEEE edge: 0.049999999999999996 rounds to 0 (naive floor(x*10+0.5) gives 0.1)", "input": { "raw": 0.049999999999999996 }, "expected": { "score": 0 } }
+  ]
+}

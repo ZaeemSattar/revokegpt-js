@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "dist/cjs",
+    "rootDir": "src",
+    "declaration": true,
+    "jsx": "react-jsx",
+    "module": "CommonJS",
+    "verbatimModuleSyntax": false,
+    "types": []
+  },
+  "include": ["src"]
+}

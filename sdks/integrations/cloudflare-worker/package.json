@@ -1,0 +1,55 @@
+{
+  "name": "@revokegpt/firewall-cloudflare",
+  "version": "0.1.0",
+  "description": "RevokeGPT firewall as a Cloudflare Worker template: fronts an origin with the signed-policy decision engine.",
+  "license": "MIT",
+  "homepage": "https://revokegpt.com",
+  "bugs": {
+    "url": "https://github.com/ZaeemSattar/revokegpt-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZaeemSattar/revokegpt-js.git",
+    "directory": "sdks/integrations/cloudflare-worker"
+  },
+  "keywords": [
+    "revokegpt",
+    "captcha",
+    "recaptcha-alternative",
+    "bot-protection",
+    "proof-of-work",
+    "cloudflare",
+    "workers",
+    "firewall",
+    "edge"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "revokegpt": {
+    "visibility": "public"
+  },
+  "engines": {
+    "node": ">=26"
+  },
+  "files": [
+    "src",
+    "wrangler.jsonc",
+    "example",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "dev": "wrangler dev",
+    "lint": "biome check .",
+    "typecheck": "wrangler types --check && tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@revokegpt/firewall": "0.1.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "~0.22.0",
+    "@revokegpt/protocol": "0.1.0",
+    "vitest": "^4.1.0",
+    "wrangler": "^4"
+  }
+}

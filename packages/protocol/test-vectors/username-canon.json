@@ -1,0 +1,124 @@
+{
+  "suite": "username-canon",
+  "protocolVersion": 1,
+  "description": "Username canonicalization known answers (protocol v1 section 15). canonical = NFKC, trim, lowercase; when the result has exactly one '@', the '+tag' (from the first '+' to the end of the local part) is dropped unless the local part would become empty.",
+  "cases": [
+    {
+      "name": "trim and lowercase",
+      "input": {
+        "username": " Alice@Example.COM "
+      },
+      "expected": {
+        "canonical": "alice@example.com"
+      }
+    },
+    {
+      "name": "plus tag dropped",
+      "input": {
+        "username": "alice+tag@example.com"
+      },
+      "expected": {
+        "canonical": "alice@example.com"
+      }
+    },
+    {
+      "name": "only the first plus suffix is dropped",
+      "input": {
+        "username": "a+b+c@x.io"
+      },
+      "expected": {
+        "canonical": "a@x.io"
+      }
+    },
+    {
+      "name": "NFKC ligature",
+      "input": {
+        "username": "ﬁ"
+      },
+      "expected": {
+        "canonical": "fi"
+      }
+    },
+    {
+      "name": "NFKC fullwidth",
+      "input": {
+        "username": "ＡＬＩＣＥ@ＥＸＡＭＰＬＥ.ＣＯＭ"
+      },
+      "expected": {
+        "canonical": "alice@example.com"
+      }
+    },
+    {
+      "name": "two at signs left as is",
+      "input": {
+        "username": "a+b@c@d.com"
+      },
+      "expected": {
+        "canonical": "a+b@c@d.com"
+      }
+    },
+    {
+      "name": "no at sign, plus kept",
+      "input": {
+        "username": "user+1"
+      },
+      "expected": {
+        "canonical": "user+1"
+      }
+    },
+    {
+      "name": "leading plus kept",
+      "input": {
+        "username": "+tag@x.io"
+      },
+      "expected": {
+        "canonical": "+tag@x.io"
+      }
+    },
+    {
+      "name": "non-breaking space trimmed",
+      "input": {
+        "username": " bob@x.io "
+      },
+      "expected": {
+        "canonical": "bob@x.io"
+      }
+    },
+    {
+      "name": "final sigma: a double quote is not case-ignorable",
+      "input": {
+        "username": "a\"Σ"
+      },
+      "expected": {
+        "canonical": "a\"σ"
+      }
+    },
+    {
+      "name": "final sigma: U+0295 is a plain letter, so it ends the lookback",
+      "input": {
+        "username": "aʕΣ"
+      },
+      "expected": {
+        "canonical": "aʕσ"
+      }
+    },
+    {
+      "name": "final sigma: U+1734 is a spacing mark, not case-ignorable (older JDK data said otherwise)",
+      "input": {
+        "username": "a᜴Σ"
+      },
+      "expected": {
+        "canonical": "a᜴σ"
+      }
+    },
+    {
+      "name": "final sigma: apostrophe is case-ignorable",
+      "input": {
+        "username": "a'Σ"
+      },
+      "expected": {
+        "canonical": "a'ς"
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  // Template: put this Worker on a route in front of your origin
+  // (routes: [{ "pattern": "example.com/*", "zone_name": "example.com" }]); `fetch(request)` then reaches
+  // the origin. Or set the var RG_ORIGIN to forward to a fixed origin URL instead.
+  // Secrets (never vars): `wrangler secret put RG_SECRET_KEY` (needed only for requireToken rules),
+  // optionally `RG_SIG_SECRET` (X-RG-Sig).
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "revokegpt-firewall",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-22",
+  "compatibility_flags": ["nodejs_als"],
+  "workers_dev": false,
+  "vars": {
+    "RG_SITE_KEY": "rgpk_REPLACE_WITH_YOUR_SITE_KEY",
+    "RG_API_BASE": "https://api.revokegpt.com"
+  }
+  // Optional: remember the highest bundle version across isolates (replay protection).
+  // "kv_namespaces": [{ "binding": "RG_STATE", "id": "<kv namespace id>" }]
+}

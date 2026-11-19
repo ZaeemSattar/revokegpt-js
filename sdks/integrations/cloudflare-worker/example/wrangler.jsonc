@@ -1,0 +1,14 @@
+{
+  // Local example: the Worker in front of a fixed origin (RG_ORIGIN). Run `node example/serve.mjs`;
+  // vars arrive from the environment (see README). Not for deployment: use ../wrangler.jsonc.
+  "name": "revokegpt-firewall-example",
+  "main": "../src/index.ts",
+  "compatibility_date": "2026-08-22",
+  "compatibility_flags": ["nodejs_als"],
+  "workers_dev": false,
+  "vars": {
+    "RG_SITE_KEY": "rgpk_conformance",
+    "RG_API_BASE": "http://127.0.0.1:4810",
+    "RG_ORIGIN": "http://127.0.0.1:4811"
+  }
+}

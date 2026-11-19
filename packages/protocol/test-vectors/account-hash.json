@@ -1,0 +1,117 @@
+{
+  "suite": "account-hash",
+  "protocolVersion": 1,
+  "description": "Account and endpoint hash known answers (protocol v1 section 15). K = HKDF-SHA-256(masterKeyHex, salt empty, info, L = 32 bytes), used as an HMAC-SHA-256 key; info is 'rg-acct-v1|' + siteId for an account hash and 'rg-ep-v1|' + siteId for an endpoint hash. acctHash = base64url(HMAC(K, tag || input)[0..16]), 22 characters, where tag is 0x61 and input the UTF-8 accountId (1 to 256 bytes), or tag 0x68 and input the 32 bytes of hashedAccountIdHex. endpointHash = base64url(HMAC(K_ep, UTF-8 canonicalUsername(endpoint))[0..16]) with K_ep from info 'rg-ep-v1|' + siteId; those answers are in endpointCases (not counted as cases). The raw and the hashed form of one value, and one value under two sites, must give different hashes.",
+  "masterKeyHex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "cases": [
+    {
+      "name": "raw ascii",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "accountId": "user-12345"
+      },
+      "expected": {
+        "hash": "k64Yq2wUhKg17kSdXHWgmg"
+      }
+    },
+    {
+      "name": "raw utf-8",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "accountId": "ünïcode-账号-🔑"
+      },
+      "expected": {
+        "hash": "5XHFeeu3exHJ44RbMl0zsw"
+      }
+    },
+    {
+      "name": "raw 256 bytes",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "accountId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expected": {
+        "hash": "ySaaNlGRId-40SNw_oDrtQ"
+      }
+    },
+    {
+      "name": "hashed 32 bytes",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "hashedAccountIdHex": "fffefdfcfbfaf9f8f7f6f5f4f3f2f1f0efeeedecebeae9e8e7e6e5e4e3e2e1e0"
+      },
+      "expected": {
+        "hash": "PBNetTodOepE6WRCxbbrJA"
+      }
+    },
+    {
+      "name": "same value raw and hashed differ",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "value": "0123456789abcdef0123456789abcdef"
+      },
+      "expected": {
+        "raw": "8t9BW21Nqy6tpcLD58-q8g",
+        "hashed": "G9uB4a50juscrQyrkXMydw"
+      }
+    },
+    {
+      "name": "two sites differ",
+      "input": {
+        "accountId": "user-12345",
+        "siteIds": [
+          "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+          "8a2d4c6e-1f3b-4a5c-8d7e-9f0a1b2c3d4e"
+        ]
+      },
+      "expected": {
+        "hashes": [
+          "k64Yq2wUhKg17kSdXHWgmg",
+          "SIndYHymPYsin_HpEfVQtA"
+        ]
+      }
+    }
+  ],
+  "endpointCases": [
+    {
+      "name": "email",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "endpoint": "alice@example.com"
+      },
+      "expected": {
+        "hash": "bu7yuI7nkH4u-PKKmDnc1w"
+      }
+    },
+    {
+      "name": "case and +tag fold to one mailbox",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "endpoint": " Alice+news@Example.COM "
+      },
+      "expected": {
+        "hash": "bu7yuI7nkH4u-PKKmDnc1w"
+      }
+    },
+    {
+      "name": "phone number",
+      "input": {
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "endpoint": "+14155550123"
+      },
+      "expected": {
+        "hash": "uPj_hWAcg8zwGHqroD7azg"
+      }
+    },
+    {
+      "name": "other site differs",
+      "input": {
+        "siteId": "8a2d4c6e-1f3b-4a5c-8d7e-9f0a1b2c3d4e",
+        "endpoint": "alice@example.com"
+      },
+      "expected": {
+        "hash": "w1CB49BfmEnUSZh01STPzw"
+      }
+    }
+  ]
+}

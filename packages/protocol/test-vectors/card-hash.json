@@ -1,0 +1,88 @@
+{
+  "suite": "card-hash",
+  "protocolVersion": 1,
+  "description": "Card, BIN and email hash known answers (protocol v1 section 20). K = HKDF-SHA-256(masterKeyHex, salt empty, info, L = 32 bytes), used as an HMAC-SHA-256 key; info is the prefix plus the site id: 'rg-card-v1|' (cardFp), 'rg-bin-v1|' (binKey), 'rg-email-v1|' (emailKey). cardFp = base64url(HMAC(K, bin6 || ':' || last4)[0..16]); binKey = base64url(HMAC(K, bin6)[0..16]); emailKey = base64url(HMAC(K, canonicalMailbox(email))[0..16]). Every hash is 22 characters. An 8-digit BIN contributes only its first 6 digits (bin6). One card under two sites, and cardFp against binKey of the same digits, must differ.",
+  "masterKeyHex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "cases": [
+    {
+      "name": "card 424242 4242 site A",
+      "input": {
+        "kind": "card",
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "cardBin": "424242",
+        "cardLastFour": "4242"
+      },
+      "expected": {
+        "hash": "b43Qh8n7zWjw07AcDPB9aA"
+      }
+    },
+    {
+      "name": "card BIN8 equals BIN6",
+      "input": {
+        "kind": "card",
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "cardBin": "42424242",
+        "cardLastFour": "4242"
+      },
+      "expected": {
+        "hash": "b43Qh8n7zWjw07AcDPB9aA"
+      }
+    },
+    {
+      "name": "card 424242 4242 site B",
+      "input": {
+        "kind": "card",
+        "siteId": "7a2d9c41-1e6f-4b83-8d05-6f3a9b2c1e70",
+        "cardBin": "424242",
+        "cardLastFour": "4242"
+      },
+      "expected": {
+        "hash": "7CpUml83TK-vCW8AI2Nf4Q"
+      }
+    },
+    {
+      "name": "bin 424242 site A",
+      "input": {
+        "kind": "bin",
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "cardBin": "424242"
+      },
+      "expected": {
+        "hash": "V3UQbfOmJc9YAxvb3_vqzA"
+      }
+    },
+    {
+      "name": "email plain",
+      "input": {
+        "kind": "email",
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "email": "alice@example.com"
+      },
+      "expected": {
+        "hash": "E_31MQtR0w16qScxBGirWg"
+      }
+    },
+    {
+      "name": "email canonical form (case and plus tag)",
+      "input": {
+        "kind": "email",
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "email": "Alice+shop@Example.com"
+      },
+      "expected": {
+        "hash": "E_31MQtR0w16qScxBGirWg"
+      }
+    },
+    {
+      "name": "email gmail dots",
+      "input": {
+        "kind": "email",
+        "siteId": "3f1c2a9e-5b7d-4e2f-9a1b-0c8d7e6f5a4b",
+        "email": "a.l.i.c.e@gmail.com"
+      },
+      "expected": {
+        "hash": "W-ttQBlKVBOP4zWnh5ejbw"
+      }
+    }
+  ]
+}
