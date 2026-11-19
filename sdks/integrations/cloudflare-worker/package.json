@@ -1,6 +1,6 @@
 {
   "name": "@revokegpt/firewall-cloudflare",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "RevokeGPT firewall as a Cloudflare Worker template: fronts an origin with the signed-policy decision engine.",
   "license": "MIT",
   "homepage": "https://revokegpt.com",
@@ -44,11 +44,11 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@revokegpt/firewall": "0.1.0"
+    "@revokegpt/firewall": "0.1.1"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "~0.22.0",
-    "@revokegpt/protocol": "0.1.0",
+    "@revokegpt/protocol": "0.1.1",
     "vitest": "^4.1.0",
     "wrangler": "^4"
   }

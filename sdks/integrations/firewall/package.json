@@ -1,6 +1,6 @@
 {
   "name": "@revokegpt/firewall",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "RevokeGPT firewall runtime core: a framework-neutral shell around the signed-policy decision engine, for server and edge integrations.",
   "license": "MIT",
   "homepage": "https://revokegpt.com",
@@ -51,7 +51,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@revokegpt/protocol": "0.1.0"
+    "@revokegpt/protocol": "0.1.1"
   },
   "devDependencies": {
     "@types/node": "^26.0.0",

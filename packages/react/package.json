@@ -1,6 +1,6 @@
 {
   "name": "@revokegpt/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "RevokeGPT for React: a component and a hook over @revokegpt/js.",
   "license": "MIT",
   "homepage": "https://revokegpt.com",
@@ -61,7 +61,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@revokegpt/js": "0.1.0"
+    "@revokegpt/js": "0.1.1"
   },
   "peerDependencies": {
     "react": "^18.2.0 || ^19.0.0"

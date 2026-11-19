@@ -1,6 +1,6 @@
 {
   "name": "@revokegpt/vue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "RevokeGPT for Vue 3: a component and a composable over @revokegpt/js.",
   "license": "MIT",
   "homepage": "https://revokegpt.com",
@@ -61,7 +61,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@revokegpt/js": "0.1.0"
+    "@revokegpt/js": "0.1.1"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

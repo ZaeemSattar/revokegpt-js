@@ -1,6 +1,6 @@
 {
   "name": "@revokegpt/firewall-node",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "RevokeGPT firewall middleware for Express, Fastify and plain node:http.",
   "license": "MIT",
   "homepage": "https://revokegpt.com",
@@ -59,12 +59,12 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@revokegpt/firewall": "0.1.0"
+    "@revokegpt/firewall": "0.1.1"
   },
   "devDependencies": {
     "@types/express": "5.0.6",
     "@types/node": "^26.0.0",
-    "@revokegpt/protocol": "0.1.0",
+    "@revokegpt/protocol": "0.1.1",
     "express": "5.3.0",
     "fastify": "5.12.7",
     "vitest": "^4.1.0"
