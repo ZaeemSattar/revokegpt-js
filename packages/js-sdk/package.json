@@ -1,6 +1,6 @@
 {
   "name": "@revokegpt/js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "RevokeGPT browser SDK: a typed, origin-pinned loader and widget wrapper for the RevokeGPT script.",
   "license": "MIT",
   "homepage": "https://revokegpt.com",

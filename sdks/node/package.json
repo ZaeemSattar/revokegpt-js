@@ -1,6 +1,6 @@
 {
   "name": "@revokegpt/node",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "RevokeGPT server SDK for Node.js: verifies response tokens with siteverify and applies the relying-party checks.",
   "license": "MIT",
   "homepage": "https://revokegpt.com",
@@ -51,7 +51,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@revokegpt/protocol": "0.1.1"
+    "@revokegpt/protocol": "0.1.2"
   },
   "devDependencies": {
     "@types/node": "^26.0.0",

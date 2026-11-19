@@ -216,7 +216,7 @@ importers:
   packages/react:
     dependencies:
       '@revokegpt/js':
-        specifier: 0.1.0
+        specifier: 0.1.2
         version: link:../js-sdk
     devDependencies:
       '@testing-library/react':
@@ -247,7 +247,7 @@ importers:
   packages/vue:
     dependencies:
       '@revokegpt/js':
-        specifier: 0.1.0
+        specifier: 0.1.2
         version: link:../js-sdk
     devDependencies:
       '@types/node':
@@ -269,14 +269,14 @@ importers:
   sdks/integrations/cloudflare-worker:
     dependencies:
       '@revokegpt/firewall':
-        specifier: 0.1.0
+        specifier: 0.1.2
         version: link:../firewall
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: ~0.22.0
         version: 0.22.0(@vitest/runner@4.1.12)(@vitest/snapshot@4.1.12)(vitest@4.1.12(@types/node@26.6.6)(jsdom@30.1.3)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(tsx@4.23.15)))
       '@revokegpt/protocol':
-        specifier: 0.1.0
+        specifier: 0.1.2
         version: link:../../../packages/protocol
       vitest:
         specifier: ^4.1.0
@@ -288,7 +288,7 @@ importers:
   sdks/integrations/firewall:
     dependencies:
       '@revokegpt/protocol':
-        specifier: 0.1.0
+        specifier: 0.1.2
         version: link:../../../packages/protocol
     devDependencies:
       '@types/node':
@@ -301,11 +301,11 @@ importers:
   sdks/integrations/nextjs:
     dependencies:
       '@revokegpt/firewall':
-        specifier: 0.1.0
+        specifier: 0.1.2
         version: link:../firewall
     devDependencies:
       '@revokegpt/protocol':
-        specifier: 0.1.0
+        specifier: 0.1.2
         version: link:../../../packages/protocol
       '@types/node':
         specifier: ^26.0.0
@@ -326,11 +326,11 @@ importers:
   sdks/integrations/node:
     dependencies:
       '@revokegpt/firewall':
-        specifier: 0.1.0
+        specifier: 0.1.2
         version: link:../firewall
     devDependencies:
       '@revokegpt/protocol':
-        specifier: 0.1.0
+        specifier: 0.1.2
         version: link:../../../packages/protocol
       '@types/express':
         specifier: 5.0.6
@@ -351,7 +351,7 @@ importers:
   sdks/node:
     dependencies:
       '@revokegpt/protocol':
-        specifier: 0.1.0
+        specifier: 0.1.2
         version: link:../../packages/protocol
     devDependencies:
       '@types/node':
